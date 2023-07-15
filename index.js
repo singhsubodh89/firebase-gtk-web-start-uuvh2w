@@ -28,12 +28,13 @@ let db, auth;
 async function main() {
   // Add Firebase project configuration object here
   const firebaseConfig = {
-    apiKey: "AIzaSyAhdBqyL3o2WqZR8PEuM3_T5F_nO448L28",
-    authDomain: "fir-web-codelab-aef1f.firebaseapp.com",
-    projectId: "fir-web-codelab-aef1f",
-    storageBucket: "fir-web-codelab-aef1f.appspot.com",
-    messagingSenderId: "714193120688",
-    appId: "1:714193120688:web:0e63ff039d94649fd3fa75"
+    apiKey: "AIzaSyAFkPU_Dx8JTFGiLdpZ8SpfNahmyHpeGqw",
+    authDomain: "newproject-94ae1.firebaseapp.com",
+    projectId: "newproject-94ae1",
+    storageBucket: "newproject-94ae1.appspot.com",
+    messagingSenderId: "825055666198",
+    appId: "1:825055666198:web:3d040a04be8dc5be45d537",
+    measurementId: "G-55ZSX18E86"
   };
 
   // Make sure Firebase is initilized
