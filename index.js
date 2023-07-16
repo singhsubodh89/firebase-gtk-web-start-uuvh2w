@@ -1,7 +1,7 @@
 // Import stylesheets
 import './style.css';
 // Firebase App (the core Firebase SDK) is always required
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js';
+import { initializeApp } from 'firebase/app';
 
 // Add the Firebase products and methods that you want to use
 import {
@@ -9,7 +9,7 @@ import {
   EmailAuthProvider,
   signOut,
   onAuthStateChanged,
-} from 'https://www.gstatic.com/firebasejs/9.6.11/firebase-auth.js';
+} from 'firebase/auth';
 import {
   getFirestore,
   addDoc,
@@ -20,9 +20,9 @@ import {
   doc,
   setDoc,
   where,
-} from 'https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore.js';
+} from 'firebase/firestore';
 
-import * as firebaseui from 'https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js';
+import * as firebaseui from 'firebaseui';
 
 // Document elements
 const startRsvpButton = document.getElementById('startRsvp');
