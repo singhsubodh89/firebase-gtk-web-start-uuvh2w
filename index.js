@@ -4,8 +4,23 @@ import './style.css';
 import { initializeApp } from 'firebase/app';
 
 // Add the Firebase products and methods that you want to use
-import { getAuth, EmailAuthProvider,   signOut,  onAuthStateChanged } from 'firebase/auth';
-import {    getFirestore,  addDoc, collection, query, orderBy, onSnapshot,  doc, setDoc, where } from 'firebase/firestore';
+import {
+  getAuth,
+  EmailAuthProvider,
+  signOut,
+  onAuthStateChanged,
+} from 'firebase/auth';
+import {
+  getFirestore,
+  addDoc,
+  collection,
+  query,
+  orderBy,
+  onSnapshot,
+  doc,
+  setDoc,
+  where,
+} from 'firebase/firestore';
 
 import * as firebaseui from 'firebaseui';
 
@@ -28,13 +43,13 @@ let db, auth;
 async function main() {
   // Add Firebase project configuration object here
   const firebaseConfig = {
-    apiKey: "AIzaSyCUHl1sqhsv9sZHAkUsy6JHpOdkyl1uEEo",
-    authDomain: "mindfulinvestments-18.firebaseapp.com",
-    projectId: "mindfulinvestments-18",
-    storageBucket: "mindfulinvestments-18.appspot.com",
-    messagingSenderId: "30458016471",
-    appId: "1:30458016471:web:dedfc3ba7e9ec7c6adb692",
-    measurementId: "G-EBMDKT9M5Q"
+    apiKey: 'AIzaSyCUHl1sqhsv9sZHAkUsy6JHpOdkyl1uEEo',
+    authDomain: 'mindfulinvestments-18.firebaseapp.com',
+    projectId: 'mindfulinvestments-18',
+    storageBucket: 'mindfulinvestments-18.appspot.com',
+    messagingSenderId: '30458016471',
+    appId: '1:30458016471:web:dedfc3ba7e9ec7c6adb692',
+    measurementId: 'G-EBMDKT9M5Q',
   };
 
   // Make sure Firebase is initilized
@@ -75,126 +90,125 @@ async function main() {
 
   const ui = new firebaseui.auth.AuthUI(getAuth());
 
-// Listen to RSVP button clicks
-startRsvpButton.addEventListener('click', () => {
-  if (auth.currentUser) {
-    // User is signed in; allows user to sign out
-    signOut(auth);
-  } else {
-    // No user is signed in; allows user to sign in
-    ui.start('#firebaseui-auth-container', uiConfig);
-  }
-});
-
-// Listen to the current Auth state
-onAuthStateChanged(auth, user => {
-  if (user) {
-    startRsvpButton.textContent = 'LOGOUT';
-    // Show guestbook to logged-in users
-    guestbookContainer.style.display = 'block';
-
-    // Subscribe to the guestbook collection
-    subscribeGuestbook();
-    // Subcribe to the user's RSVP
-    subscribeCurrentRSVP(user);
-  } else {
-    startRsvpButton.textContent = 'RSVP';
-    // Hide guestbook for non-logged-in users
-    guestbookContainer.style.display = 'none';
-    // Unsubscribe from the guestbook collection
-    unsubscribeGuestbook();
-    // Unsubscribe from the guestbook collection
-    unsubscribeCurrentRSVP();
-  }
-});
-
- // Listen to the form submission
- form.addEventListener('submit', async e => {
-  // Prevent the default form redirect
-  e.preventDefault();
-  // Write a new message to the database collection "guestbook"
-  addDoc(collection(db, 'guestbook'), {
-    text: input.value,
-    timestamp: Date.now(),
-    name: auth.currentUser.displayName,
-    userId: auth.currentUser.uid
+  // Listen to RSVP button clicks
+  startRsvpButton.addEventListener('click', () => {
+    if (auth.currentUser) {
+      // User is signed in; allows user to sign out
+      signOut(auth);
+    } else {
+      // No user is signed in; allows user to sign in
+      ui.start('#firebaseui-auth-container', uiConfig);
+    }
   });
-  // clear message input field
-  input.value = '';
-  // Return false to avoid redirect
-  return false;
 
-  // Create query for messages
+  // Listen to the current Auth state
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      startRsvpButton.textContent = 'LOGOUT';
+      // Show guestbook to logged-in users
+      guestbookContainer.style.display = 'block';
+
+      // Subscribe to the guestbook collection
+      subscribeGuestbook();
+      // Subcribe to the user's RSVP
+      subscribeCurrentRSVP(user);
+    } else {
+      startRsvpButton.textContent = 'RSVP';
+      // Hide guestbook for non-logged-in users
+      guestbookContainer.style.display = 'none';
+      // Unsubscribe from the guestbook collection
+      unsubscribeGuestbook();
+      // Unsubscribe from the guestbook collection
+      unsubscribeCurrentRSVP();
+    }
+  });
+
+  // Listen to the form submission
+  form.addEventListener('submit', async (e) => {
+    // Prevent the default form redirect
+    e.preventDefault();
+    // Write a new message to the database collection "guestbook"
+    addDoc(collection(db, 'guestbook'), {
+      text: input.value,
+      timestamp: Date.now(),
+      name: auth.currentUser.displayName,
+      userId: auth.currentUser.uid,
+    });
+    // clear message input field
+    input.value = '';
+    // Return false to avoid redirect
+    return false;
+
+    // Create query for messages
+    const q = query(collection(db, 'guestbook'), orderBy('timestamp', 'desc'));
+    onSnapshot(q, (snaps) => {
+      // Reset page
+      guestbook.innerHTML = '';
+      // Loop through documents in database
+      snaps.forEach((doc) => {
+        // Create an HTML entry for each document and add it to the chat
+        const entry = document.createElement('p');
+        entry.textContent = doc.data().name + ': ' + doc.data().text;
+        guestbook.appendChild(entry);
+      });
+    });
+  });
+
+  // Listen to RSVP responses
+  rsvpYes.onclick = async () => {
+    // Get a reference to the user's document in the attendees collection
+    const userRef = doc(db, 'attendees', auth.currentUser.uid);
+
+    // If they RSVP'd yes, save a document with attendi()ng: true
+    try {
+      await setDoc(userRef, {
+        attending: true,
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  rsvpNo.onclick = async () => {
+    // Get a reference to the user's document in the attendees collection
+    const userRef = doc(db, 'attendees', auth.currentUser.uid);
+
+    // If they RSVP'd yes, save a document with attending: true
+    try {
+      await setDoc(userRef, {
+        attending: false,
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  // Listen for attendee list
+  const attendingQuery = query(
+    collection(db, 'attendees'),
+    where('attending', '==', true)
+  );
+  const unsubscribe = onSnapshot(attendingQuery, (snap) => {
+    const newAttendeeCount = snap.docs.length;
+    numberAttending.innerHTML = newAttendeeCount + ' people going';
+  });
+}
+main();
+
+// Listen to guestbook updates
+function subscribeGuestbook() {
   const q = query(collection(db, 'guestbook'), orderBy('timestamp', 'desc'));
-  onSnapshot(q, snaps => {
+  guestbookListener = onSnapshot(q, (snaps) => {
     // Reset page
     guestbook.innerHTML = '';
     // Loop through documents in database
-    snaps.forEach(doc => {
+    snaps.forEach((doc) => {
       // Create an HTML entry for each document and add it to the chat
       const entry = document.createElement('p');
       entry.textContent = doc.data().name + ': ' + doc.data().text;
       guestbook.appendChild(entry);
     });
   });
-});
-
-
-// Listen to RSVP responses
-rsvpYes.onclick = async () => {
-  // Get a reference to the user's document in the attendees collection
-  const userRef = doc(db, 'attendees', auth.currentUser.uid);
-
-  // If they RSVP'd yes, save a document with attendi()ng: true
-  try {
-    await setDoc(userRef, {
-      attending: true
-    });
-  } catch (e) {
-    console.error(e);
-  }
-};
-
-rsvpNo.onclick = async () => {
-  // Get a reference to the user's document in the attendees collection
-  const userRef = doc(db, 'attendees', auth.currentUser.uid);
-
-  // If they RSVP'd yes, save a document with attending: true
-  try {
-    await setDoc(userRef, {
-      attending: false
-    });
-  } catch (e) {
-    console.error(e);
-  }
-};
-
-// Listen for attendee list
-const attendingQuery = query(
-  collection(db, 'attendees'),
-  where('attending', '==', true)
-);
-const unsubscribe = onSnapshot(attendingQuery, snap => {
-  const newAttendeeCount = snap.docs.length;
-  numberAttending.innerHTML = newAttendeeCount + ' people going';
-});
-}
-main();
-
-// Listen to guestbook updates
-function subscribeGuestbook() {
-const q = query(collection(db, 'guestbook'), orderBy('timestamp', 'desc'));
-guestbookListener = onSnapshot(q, snaps => {
-  // Reset page
-  guestbook.innerHTML = '';
-  // Loop through documents in database
-  snaps.forEach(doc => {
-    // Create an HTML entry for each document and add it to the chat
-    const entry = document.createElement('p');
-    entry.textContent = doc.data().name + ': ' + doc.data().text;
-    guestbook.appendChild(entry);
-  });
-});
 }
 
 // Unsubscribe from guestbook updates
@@ -202,12 +216,13 @@ function unsubscribeGuestbook() {
   if (guestbookListener != null) {
     guestbookListener();
     guestbookListener = null;
-  }}
+  }
+}
 
 // Listen for attendee list
 function subscribeCurrentRSVP(user) {
   const ref = doc(db, 'attendees', user.uid);
-  rsvpListener = onSnapshot(ref, doc => {
+  rsvpListener = onSnapshot(ref, (doc) => {
     if (doc && doc.data()) {
       const attendingResponse = doc.data().attending;
 
