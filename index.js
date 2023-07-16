@@ -22,7 +22,7 @@ import {
   where,
 } from 'https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore.js';
 
-import * as firebaseui from 'firebaseui';
+import * as firebaseui from 'https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js';
 
 // Document elements
 const startRsvpButton = document.getElementById('startRsvp');
