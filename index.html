@@ -1,61 +1,42 @@
-<head>
-  <meta charset="utf-8" />
-  <title>MIndful Investments Meetup</title>
-  <link
-    type="text/css"
-    rel="stylesheet"
-    href="https://cdn.firebase.com/libs/firebaseui/4.0.0/firebaseui.css"
-  />
-  <link
-    href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700|Roboto:300,400,700&display=swap"
-    rel="stylesheet"
-  />
-  <link
-    href="https://fonts.googleapis.com/icon?family=Material+Icons"
-    rel="stylesheet"
-  />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-</head>
+    <head>
+        <title>W3.CSS Template</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+        <style>
+            body,
+            h1 {
+                font-family: "Raleway", sans-serif
+            }
 
+            body,
+            html {
+                height: 100%
+            }
+
+            .bgimg {
+                background-image: url('https://www.w3schools.com/w3images/forestbridge.jpg');
+                min-height: 100%;
+                background-position: center;
+                background-size: cover;
+            }
+        </style>
+    </head>
 <body>
-  <div id="app">
-    <img
-      src="https://firebasestorage.googleapis.com/v0/b/fir-images-a61c9.appspot.com/o/codelab.png?alt=media&token=f45f808c-ce40-4b34-944c-8d8fac00e13d"
-    />
 
-    <section id="event-details-container">
-      <h1>Mindful Investments Meetup</h1>
+    <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+        <div class="w3-display-topleft w3-padding-large w3-xlarge">
+            <link rel="icon" href="mindful-investments-logo.png">
+        </div>
+        <div class="w3-display-middle">
+            <h1 class="w3-jumbo w3-animate-top">COMING SOON</h1>
+            <hr class="w3-border-grey" style="margin:auto;width:40%">
+            <p class="w3-large w3-center">35 days left</p>
+        </div>
+        <div class="w3-display-bottomleft w3-padding-large">
+            <p> Made with <span style="font-size:200%;color:red;">&hearts;</span> in India!</p>
+        </div>
+    </div>
 
-      <p><i class="material-icons">calendar_today</i> July 30</p>
-      <p><i class="material-icons">location_city</i> ZOOM</p>
-      <!-- ADD THE RSVP BUTTON HERE -->
-      <button id="startRsvp">RSVP</button>
-    </section>
-
-    <section id="firebaseui-auth-container"></section>
-
-    <section id="description-container">
-      <h2>What we'll be doing</h2>
-      <p>Join me for a day full of "Mindful Investments" meetup!</p>
-      <p id="number-attending"></p>
-    </section>
-
-    <section id="guestbook-container">
-      <h2>Are you attending?</h2>
-      <button id="rsvp-yes">YES</button>
-      <button id="rsvp-no">NO</button>
-
-      <h2>Discussion</h2>
-
-      <form id="leave-message">
-        <label>Leave a message: </label>
-        <input type="text" id="message" />
-        <button type="submit">
-          <i class="material-icons">send</i>
-          <span>SEND</span>
-        </button>
-      </form>
-      <section id="guestbook"></section>
-    </section>
-  </div>
 </body>
